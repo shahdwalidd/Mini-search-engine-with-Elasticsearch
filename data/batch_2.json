@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-2-0",
+        "name": "Artificial Intelligence",
+        "description": "Artificial Intelligence drives innovation in retrieval systems.",
+        "category": "Cloud",
+        "price": 125.03
+    },
+    {
+        "id": "P-2-1",
+        "name": "Cybersecurity",
+        "description": "Blockchain is the future of finance.",
+        "category": "Security",
+        "price": 68.1
+    },
+    {
+        "id": "P-2-2",
+        "name": "Artificial Intelligence",
+        "description": "Artificial Intelligence is essential for healthcare.",
+        "category": "AI",
+        "price": 17.41
+    },
+    {
+        "id": "P-2-3",
+        "name": "Augmented Reality",
+        "description": "Blockchain is essential for e-commerce.",
+        "category": "IoT",
+        "price": 111.67
+    },
+    {
+        "id": "P-2-4",
+        "name": "Data Science",
+        "description": "Internet of Things improves efficiency in e-commerce.",
+        "category": "Security",
+        "price": 229.54
+    }
+]

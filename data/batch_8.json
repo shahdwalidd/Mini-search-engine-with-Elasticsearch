@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-8-0",
+        "name": "Internet of Things",
+        "description": "Internet of Things improves efficiency in retrieval systems.",
+        "category": "AI",
+        "price": 180.67
+    },
+    {
+        "id": "P-8-1",
+        "name": "Data Science",
+        "description": "Cloud Computing is essential for education.",
+        "category": "Security",
+        "price": 161.56
+    },
+    {
+        "id": "P-8-2",
+        "name": "Augmented Reality",
+        "description": "Artificial Intelligence is essential for modern software development.",
+        "category": "IoT",
+        "price": 141.23
+    },
+    {
+        "id": "P-8-3",
+        "name": "Augmented Reality",
+        "description": "Quantum Computing improves efficiency in finance.",
+        "category": "Security",
+        "price": 183.26
+    },
+    {
+        "id": "P-8-4",
+        "name": "Data Science",
+        "description": "Quantum Computing is transforming e-commerce.",
+        "category": "Cloud",
+        "price": 186.84
+    }
+]

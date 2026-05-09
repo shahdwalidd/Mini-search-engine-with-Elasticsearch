@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-11-0",
+        "name": "Cloud Computing",
+        "description": "Blockchain is transforming retrieval systems.",
+        "category": "IoT",
+        "price": 95.03
+    },
+    {
+        "id": "P-11-1",
+        "name": "Machine Learning",
+        "description": "Augmented Reality is essential for education.",
+        "category": "AI",
+        "price": 135.35
+    },
+    {
+        "id": "P-11-2",
+        "name": "Cybersecurity",
+        "description": "Cybersecurity is essential for healthcare.",
+        "category": "Cloud",
+        "price": 243.92
+    },
+    {
+        "id": "P-11-3",
+        "name": "Machine Learning",
+        "description": "Internet of Things improves efficiency in smart cities.",
+        "category": "Security",
+        "price": 91.27
+    },
+    {
+        "id": "P-11-4",
+        "name": "Quantum Computing",
+        "description": "Cloud Computing is essential for education.",
+        "category": "Data",
+        "price": 208.72
+    }
+]

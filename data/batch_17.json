@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-17-0",
+        "name": "Artificial Intelligence",
+        "description": "Artificial Intelligence is essential for smart cities.",
+        "category": "IoT",
+        "price": 143.14
+    },
+    {
+        "id": "P-17-1",
+        "name": "Artificial Intelligence",
+        "description": "Data Science is essential for e-commerce.",
+        "category": "AI",
+        "price": 139.3
+    },
+    {
+        "id": "P-17-2",
+        "name": "Internet of Things",
+        "description": "Augmented Reality drives innovation in healthcare.",
+        "category": "Data",
+        "price": 122.05
+    },
+    {
+        "id": "P-17-3",
+        "name": "Data Science",
+        "description": "Blockchain is essential for finance.",
+        "category": "Data",
+        "price": 189.55
+    },
+    {
+        "id": "P-17-4",
+        "name": "Augmented Reality",
+        "description": "Data Science is transforming education.",
+        "category": "Cloud",
+        "price": 29.33
+    }
+]

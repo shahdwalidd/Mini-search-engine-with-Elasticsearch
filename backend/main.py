@@ -17,10 +17,10 @@ from fastapi.responses import JSONResponse
 from elasticsearch import Elasticsearch
 
 try:
-    import pandas as pd
-    PANDAS_OK = True
+    from openpyxl import load_workbook
+    XLSX_OK = True
 except Exception:
-    PANDAS_OK = False
+    XLSX_OK = False
 
 try:
     import pdfplumber
@@ -121,11 +121,21 @@ def index_pdf(path):
 
 
 def index_xlsx(path):
-    if not PANDAS_OK:
-        print(f"pandas not installed - skipping {path}")
+    if not XLSX_OK:
+        print(f"openpyxl not installed - skipping {path}")
         return 0
-    df = pd.read_excel(path)
-    content = " | ".join(df.astype(str).apply(" ".join, axis=1))
+    try:
+        workbook = load_workbook(path, read_only=True, data_only=True)
+        sheet = workbook.active
+        rows = []
+        for row in sheet.iter_rows(values_only=True):
+            cells = [str(cell) for cell in row if cell is not None]
+            if cells:
+                rows.append(" | ".join(cells))
+        content = " | ".join(rows)
+    except Exception as err:
+        print(f"Error reading {path}: {err}")
+        return 0
     es.index(index=INDEX, document={
         "filename": os.path.basename(path),
         "content": content,
@@ -138,57 +148,27 @@ def index_xlsx(path):
 def index_csv(path):
     mod = _mod_date(path)
     count = 0
-    if PANDAS_OK:
-        df = pd.read_csv(path)
-        for _, row in df.iterrows():
-            name = ""
-            for col in ["name", "title"]:
-                if col in df.columns and str(row.get(col, "")) not in ("", "nan"):
-                    name = str(row[col])
-                    break
-            desc = ""
-            for col in ["description", "content", "text", "body"]:
-                if col in df.columns and str(row.get(col, "")) not in ("", "nan"):
-                    desc = str(row[col])
-                    break
-            extras = " ".join(str(v) for v in row.values if str(v) != "nan")
+    with open(path, encoding="utf-8", errors="ignore") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            name = row.get("name") or row.get("title") or os.path.basename(path)
+            desc = row.get("description") or row.get("content") or ""
+            extras = " ".join(str(v) for v in row.values())
             doc = {
-                "filename": name or os.path.basename(path),
+                "filename": name,
                 "content": (desc + " " + extras).strip(),
                 "file_type": "csv",
                 "mod_date": mod,
             }
-            if "category" in df.columns and str(row.get("category", "")) not in ("", "nan"):
-                doc["category"] = str(row["category"])
-            if "price" in df.columns:
+            if row.get("category"):
+                doc["category"] = row["category"]
+            if row.get("price"):
                 try:
                     doc["price"] = float(row["price"])
                 except Exception:
                     pass
             es.index(index=INDEX, document=doc)
             count += 1
-    else:
-        with open(path, encoding="utf-8", errors="ignore") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                name = row.get("name") or row.get("title") or os.path.basename(path)
-                desc = row.get("description") or row.get("content") or ""
-                extras = " ".join(str(v) for v in row.values())
-                doc = {
-                    "filename": name,
-                    "content": (desc + " " + extras).strip(),
-                    "file_type": "csv",
-                    "mod_date": mod,
-                }
-                if row.get("category"):
-                    doc["category"] = row["category"]
-                if row.get("price"):
-                    try:
-                        doc["price"] = float(row["price"])
-                    except Exception:
-                        pass
-                es.index(index=INDEX, document=doc)
-                count += 1
     return count
 
 

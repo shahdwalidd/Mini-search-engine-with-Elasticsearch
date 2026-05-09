@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-6-0",
+        "name": "Cybersecurity",
+        "description": "Machine Learning changes the way we think about retrieval systems.",
+        "category": "Cloud",
+        "price": 79.76
+    },
+    {
+        "id": "P-6-1",
+        "name": "Quantum Computing",
+        "description": "Data Science is transforming finance.",
+        "category": "IoT",
+        "price": 258.45
+    },
+    {
+        "id": "P-6-2",
+        "name": "Machine Learning",
+        "description": "Quantum Computing changes the way we think about finance.",
+        "category": "Data",
+        "price": 233.82
+    },
+    {
+        "id": "P-6-3",
+        "name": "Artificial Intelligence",
+        "description": "Cybersecurity is essential for retrieval systems.",
+        "category": "AI",
+        "price": 119.78
+    },
+    {
+        "id": "P-6-4",
+        "name": "Machine Learning",
+        "description": "Artificial Intelligence is the future of finance.",
+        "category": "Security",
+        "price": 243.26
+    }
+]

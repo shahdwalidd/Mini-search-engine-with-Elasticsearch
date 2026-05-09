@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-3-0",
+        "name": "Quantum Computing",
+        "description": "Cybersecurity is essential for smart cities.",
+        "category": "IoT",
+        "price": 130.49
+    },
+    {
+        "id": "P-3-1",
+        "name": "Augmented Reality",
+        "description": "Augmented Reality is the future of healthcare.",
+        "category": "AI",
+        "price": 132.63
+    },
+    {
+        "id": "P-3-2",
+        "name": "Cybersecurity",
+        "description": "Cloud Computing is essential for modern software development.",
+        "category": "AI",
+        "price": 216.75
+    },
+    {
+        "id": "P-3-3",
+        "name": "Data Science",
+        "description": "Cloud Computing is essential for healthcare.",
+        "category": "Data",
+        "price": 247.92
+    },
+    {
+        "id": "P-3-4",
+        "name": "Internet of Things",
+        "description": "Machine Learning is the future of retrieval systems.",
+        "category": "Data",
+        "price": 169.01
+    }
+]

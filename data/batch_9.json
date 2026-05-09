@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-9-0",
+        "name": "Quantum Computing",
+        "description": "Augmented Reality drives innovation in education.",
+        "category": "Security",
+        "price": 199.45
+    },
+    {
+        "id": "P-9-1",
+        "name": "Cybersecurity",
+        "description": "Augmented Reality changes the way we think about e-commerce.",
+        "category": "Security",
+        "price": 232.79
+    },
+    {
+        "id": "P-9-2",
+        "name": "Cloud Computing",
+        "description": "Internet of Things improves efficiency in smart cities.",
+        "category": "AI",
+        "price": 55.37
+    },
+    {
+        "id": "P-9-3",
+        "name": "Blockchain",
+        "description": "Blockchain is the future of finance.",
+        "category": "Security",
+        "price": 236.91
+    },
+    {
+        "id": "P-9-4",
+        "name": "Augmented Reality",
+        "description": "Augmented Reality changes the way we think about modern software development.",
+        "category": "IoT",
+        "price": 42.96
+    }
+]

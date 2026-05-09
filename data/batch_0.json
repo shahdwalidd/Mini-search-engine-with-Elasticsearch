@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-0-0",
+        "name": "Augmented Reality",
+        "description": "Augmented Reality is essential for modern software development.",
+        "category": "Security",
+        "price": 146.11
+    },
+    {
+        "id": "P-0-1",
+        "name": "Artificial Intelligence",
+        "description": "Augmented Reality improves efficiency in education.",
+        "category": "AI",
+        "price": 163.86
+    },
+    {
+        "id": "P-0-2",
+        "name": "Quantum Computing",
+        "description": "Data Science drives innovation in e-commerce.",
+        "category": "Security",
+        "price": 219.71
+    },
+    {
+        "id": "P-0-3",
+        "name": "Blockchain",
+        "description": "Artificial Intelligence drives innovation in smart cities.",
+        "category": "IoT",
+        "price": 251.91
+    },
+    {
+        "id": "P-0-4",
+        "name": "Blockchain",
+        "description": "Cybersecurity improves efficiency in retrieval systems.",
+        "category": "IoT",
+        "price": 95.98
+    }
+]

@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-7-0",
+        "name": "Quantum Computing",
+        "description": "Machine Learning is essential for healthcare.",
+        "category": "Data",
+        "price": 271.19
+    },
+    {
+        "id": "P-7-1",
+        "name": "Data Science",
+        "description": "Data Science is transforming healthcare.",
+        "category": "Cloud",
+        "price": 282.55
+    },
+    {
+        "id": "P-7-2",
+        "name": "Artificial Intelligence",
+        "description": "Augmented Reality is transforming e-commerce.",
+        "category": "Data",
+        "price": 236.99
+    },
+    {
+        "id": "P-7-3",
+        "name": "Machine Learning",
+        "description": "Cybersecurity improves efficiency in e-commerce.",
+        "category": "Cloud",
+        "price": 162.66
+    },
+    {
+        "id": "P-7-4",
+        "name": "Blockchain",
+        "description": "Augmented Reality drives innovation in smart cities.",
+        "category": "Cloud",
+        "price": 267.13
+    }
+]

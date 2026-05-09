@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-4-0",
+        "name": "Cloud Computing",
+        "description": "Machine Learning drives innovation in finance.",
+        "category": "IoT",
+        "price": 260.69
+    },
+    {
+        "id": "P-4-1",
+        "name": "Quantum Computing",
+        "description": "Quantum Computing drives innovation in e-commerce.",
+        "category": "IoT",
+        "price": 64.55
+    },
+    {
+        "id": "P-4-2",
+        "name": "Cloud Computing",
+        "description": "Blockchain is the future of retrieval systems.",
+        "category": "IoT",
+        "price": 258.34
+    },
+    {
+        "id": "P-4-3",
+        "name": "Cybersecurity",
+        "description": "Internet of Things is transforming retrieval systems.",
+        "category": "Data",
+        "price": 98.92
+    },
+    {
+        "id": "P-4-4",
+        "name": "Artificial Intelligence",
+        "description": "Internet of Things is transforming education.",
+        "category": "Data",
+        "price": 79.44
+    }
+]

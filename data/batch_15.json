@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-15-0",
+        "name": "Machine Learning",
+        "description": "Cybersecurity is transforming e-commerce.",
+        "category": "Data",
+        "price": 182.9
+    },
+    {
+        "id": "P-15-1",
+        "name": "Blockchain",
+        "description": "Cloud Computing is the future of finance.",
+        "category": "Data",
+        "price": 183.63
+    },
+    {
+        "id": "P-15-2",
+        "name": "Machine Learning",
+        "description": "Internet of Things improves efficiency in smart cities.",
+        "category": "Security",
+        "price": 41.15
+    },
+    {
+        "id": "P-15-3",
+        "name": "Machine Learning",
+        "description": "Augmented Reality improves efficiency in healthcare.",
+        "category": "IoT",
+        "price": 127.32
+    },
+    {
+        "id": "P-15-4",
+        "name": "Blockchain",
+        "description": "Machine Learning drives innovation in smart cities.",
+        "category": "Cloud",
+        "price": 275.69
+    }
+]

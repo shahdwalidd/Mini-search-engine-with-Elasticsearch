@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-16-0",
+        "name": "Cloud Computing",
+        "description": "Quantum Computing improves efficiency in retrieval systems.",
+        "category": "IoT",
+        "price": 40.32
+    },
+    {
+        "id": "P-16-1",
+        "name": "Data Science",
+        "description": "Internet of Things is the future of healthcare.",
+        "category": "Data",
+        "price": 186.88
+    },
+    {
+        "id": "P-16-2",
+        "name": "Internet of Things",
+        "description": "Machine Learning drives innovation in e-commerce.",
+        "category": "Data",
+        "price": 50.66
+    },
+    {
+        "id": "P-16-3",
+        "name": "Internet of Things",
+        "description": "Artificial Intelligence changes the way we think about modern software development.",
+        "category": "Cloud",
+        "price": 281.79
+    },
+    {
+        "id": "P-16-4",
+        "name": "Cloud Computing",
+        "description": "Cybersecurity is the future of e-commerce.",
+        "category": "IoT",
+        "price": 30.4
+    }
+]

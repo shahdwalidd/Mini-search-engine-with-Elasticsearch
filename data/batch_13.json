@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-13-0",
+        "name": "Cybersecurity",
+        "description": "Internet of Things is transforming healthcare.",
+        "category": "Cloud",
+        "price": 196.05
+    },
+    {
+        "id": "P-13-1",
+        "name": "Data Science",
+        "description": "Cloud Computing improves efficiency in smart cities.",
+        "category": "Security",
+        "price": 24.58
+    },
+    {
+        "id": "P-13-2",
+        "name": "Quantum Computing",
+        "description": "Machine Learning is the future of finance.",
+        "category": "AI",
+        "price": 249.91
+    },
+    {
+        "id": "P-13-3",
+        "name": "Augmented Reality",
+        "description": "Artificial Intelligence is the future of modern software development.",
+        "category": "AI",
+        "price": 81.1
+    },
+    {
+        "id": "P-13-4",
+        "name": "Cloud Computing",
+        "description": "Cloud Computing improves efficiency in healthcare.",
+        "category": "Security",
+        "price": 104.48
+    }
+]

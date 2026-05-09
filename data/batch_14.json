@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-14-0",
+        "name": "Machine Learning",
+        "description": "Machine Learning changes the way we think about modern software development.",
+        "category": "IoT",
+        "price": 28.19
+    },
+    {
+        "id": "P-14-1",
+        "name": "Quantum Computing",
+        "description": "Blockchain drives innovation in smart cities.",
+        "category": "IoT",
+        "price": 244.82
+    },
+    {
+        "id": "P-14-2",
+        "name": "Internet of Things",
+        "description": "Machine Learning drives innovation in e-commerce.",
+        "category": "Data",
+        "price": 111.83
+    },
+    {
+        "id": "P-14-3",
+        "name": "Augmented Reality",
+        "description": "Data Science drives innovation in finance.",
+        "category": "AI",
+        "price": 188.39
+    },
+    {
+        "id": "P-14-4",
+        "name": "Data Science",
+        "description": "Augmented Reality is transforming modern software development.",
+        "category": "AI",
+        "price": 37.12
+    }
+]

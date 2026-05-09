@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-19-0",
+        "name": "Quantum Computing",
+        "description": "Data Science drives innovation in healthcare.",
+        "category": "IoT",
+        "price": 66.88
+    },
+    {
+        "id": "P-19-1",
+        "name": "Cloud Computing",
+        "description": "Cybersecurity is transforming retrieval systems.",
+        "category": "Data",
+        "price": 26.18
+    },
+    {
+        "id": "P-19-2",
+        "name": "Blockchain",
+        "description": "Artificial Intelligence is essential for retrieval systems.",
+        "category": "IoT",
+        "price": 113.26
+    },
+    {
+        "id": "P-19-3",
+        "name": "Quantum Computing",
+        "description": "Internet of Things changes the way we think about smart cities.",
+        "category": "Cloud",
+        "price": 214.03
+    },
+    {
+        "id": "P-19-4",
+        "name": "Data Science",
+        "description": "Data Science changes the way we think about modern software development.",
+        "category": "AI",
+        "price": 120.98
+    }
+]

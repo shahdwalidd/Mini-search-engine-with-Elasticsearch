@@ -1,0 +1,37 @@
+[
+    {
+        "id": "P-10-0",
+        "name": "Cybersecurity",
+        "description": "Cybersecurity drives innovation in e-commerce.",
+        "category": "AI",
+        "price": 165.8
+    },
+    {
+        "id": "P-10-1",
+        "name": "Artificial Intelligence",
+        "description": "Internet of Things improves efficiency in smart cities.",
+        "category": "IoT",
+        "price": 152.92
+    },
+    {
+        "id": "P-10-2",
+        "name": "Quantum Computing",
+        "description": "Blockchain is transforming education.",
+        "category": "Data",
+        "price": 242.58
+    },
+    {
+        "id": "P-10-3",
+        "name": "Augmented Reality",
+        "description": "Quantum Computing is the future of retrieval systems.",
+        "category": "Security",
+        "price": 66.23
+    },
+    {
+        "id": "P-10-4",
+        "name": "Artificial Intelligence",
+        "description": "Cloud Computing is the future of retrieval systems.",
+        "category": "Data",
+        "price": 38.68
+    }
+]

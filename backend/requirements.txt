@@ -1,7 +1,7 @@
 fastapi==0.111.0
 uvicorn[standard]==0.29.0
 elasticsearch==8.13.0
-pandas==2.1.4
 pdfplumber==0.11.0
 openpyxl==3.1.2
+reportlab==3.8.1
 python-multipart==0.0.9
