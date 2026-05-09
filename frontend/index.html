@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NexSearch — Mini Search Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #09090f;
+  --surface:   #111118;
+  --card:      #16161f;
+  --border:    #2a2a3a;
+  --accent:    #7c5cfc;
+  --accent2:   #fc5c7d;
+  --accent3:   #5cf0fc;
+  --text:      #e8e8f0;
+  --muted:     #6b6b80;
+  --success:   #4ade80;
+  --warn:      #fbbf24;
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --radius:    10px;
+  --glow:      0 0 30px rgba(124,92,252,0.25);
+  --transition: 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Noise texture overlay ─────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1000; opacity: 0.4;
+}
+
+/* ── Animated background blobs ─────────────────────────── */
+.blobs {
+  position: fixed; inset: 0; pointer-events: none; overflow: hidden;
+}
+.blob {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12;
+  animation: drift 20s ease-in-out infinite alternate;
+}
+.blob-1 { width: 500px; height: 500px; background: var(--accent); top: -200px; left: -200px; animation-delay: 0s; }
+.blob-2 { width: 400px; height: 400px; background: var(--accent2); bottom: -150px; right: -150px; animation-delay: -7s; }
+.blob-3 { width: 300px; height: 300px; background: var(--accent3); top: 40%; left: 50%; animation-delay: -14s; }
+
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(60px, 40px) scale(1.1); }
+}
+
+/* ── Layout ────────────────────────────────────────────── */
+.shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  position: relative; z-index: 1;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+  animation: fadeUp 0.6s ease both;
+}
+.logo-mark {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-head); font-size: 13px; font-weight: 600;
+  color: var(--accent); letter-spacing: 4px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+h1 {
+  font-family: var(--font-head); font-size: clamp(36px, 6vw, 72px);
+  font-weight: 800; line-height: 1;
+  background: linear-gradient(135deg, #fff 30%, var(--accent) 60%, var(--accent2) 90%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+.tagline {
+  color: var(--muted); font-size: 14px; letter-spacing: 1px;
+}
+
+/* ── Status pill ───────────────────────────────────────── */
+.status-bar {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface); font-size: 11px; color: var(--muted);
+  font-family: var(--font-mono);
+}
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+.pill-dot.green  { background: var(--success); box-shadow: 0 0 6px var(--success); }
+.pill-dot.red    { background: var(--accent2); }
+.pill-dot.yellow { background: var(--warn); }
+
+/* ── Cards ─────────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.card:hover { border-color: rgba(124,92,252,0.4); box-shadow: var(--glow); }
+.card-title {
+  font-family: var(--font-head); font-size: 11px; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.card-title::after {
+  content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent);
+}
+
+/* ── Index Builder ─────────────────────────────────────── */
+.format-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px;
+}
+.fmt-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--surface);
+  cursor: pointer; transition: all var(--transition);
+  color: var(--muted); font-family: var(--font-mono); font-size: 10px;
+}
+.fmt-btn.active {
+  border-color: var(--accent); background: rgba(124,92,252,0.12);
+  color: var(--accent); box-shadow: 0 0 12px rgba(124,92,252,0.2);
+}
+.fmt-icon { font-size: 20px; }
+
+.folder-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.input-field {
+  flex: 1; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 14px; color: var(--text);
+  font-family: var(--font-mono); font-size: 13px;
+  transition: border-color var(--transition);
+}
+.input-field:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,92,252,0.1); }
+.input-field::placeholder { color: var(--muted); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 8px; border: none;
+  cursor: pointer; font-family: var(--font-mono); font-size: 13px;
+  font-weight: 700; transition: all var(--transition); white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent); color: #fff;
+}
+.btn-primary:hover { background: #6a4ae0; box-shadow: 0 0 20px rgba(124,92,252,0.4); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary {
+  background: var(--surface); border: 1px solid var(--border); color: var(--text);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+.build-result {
+  display: none; margin-top: 12px; padding: 12px; border-radius: 8px;
+  background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2);
+  font-size: 12px; color: var(--success);
+}
+.build-result.error {
+  background: rgba(252,92,125,0.08); border-color: rgba(252,92,125,0.2);
+  color: var(--accent2);
+}
+.build-result.show { display: block; }
+
+/* ── Search Box ─────────────────────────────────────────── */
+.search-wrapper {
+  position: relative; margin-bottom: 12px;
+}
+.search-input {
+  width: 100%; padding: 16px 60px 16px 20px;
+  font-size: 15px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-mono);
+  transition: all var(--transition);
+}
+.search-input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(124,92,252,0.15), var(--glow);
+}
+.search-input::placeholder { color: var(--muted); }
+.search-btn {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  width: 38px; height: 38px; border-radius: 6px;
+  background: var(--accent); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--transition); color: #fff;
+}
+.search-btn:hover { background: #6a4ae0; box-shadow: 0 0 16px rgba(124,92,252,0.5); }
+
+/* ── Filters row ────────────────────────────────────────── */
+.filters {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+}
+.filter-select {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; color: var(--text);
+  font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+}
+.filter-select:focus { outline: none; border-color: var(--accent); }
+.filter-date { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+.filter-date input[type="date"] {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 7px 10px; color: var(--text);
+  font-family: var(--font-mono); font-size: 12px;
+  color-scheme: dark;
+}
+.filter-date input[type="date"]:focus { outline: none; border-color: var(--accent); }
+
+/* ── Operator chips ─────────────────────────────────────── */
+.op-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.chip {
+  padding: 4px 10px; border-radius: 100px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 11px; color: var(--muted); cursor: pointer;
+  font-family: var(--font-mono); transition: all var(--transition);
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(124,92,252,0.1); }
+.chip code { color: inherit; }
+
+/* ── Results ─────────────────────────────────────────────── */
+.results-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px; font-size: 12px; color: var(--muted);
+}
+.results-count { color: var(--text); }
+.results-count strong { color: var(--accent); }
+
+.result-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 12px;
+  transition: all var(--transition); position: relative; overflow: hidden;
+  animation: fadeUp 0.3s ease both;
+}
+.result-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--accent); opacity: 0;
+  transition: opacity var(--transition);
+}
+.result-card:hover { border-color: rgba(124,92,252,0.3); box-shadow: var(--glow); }
+.result-card:hover::before { opacity: 1; }
+
+.result-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.result-title { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--text); }
+.result-meta { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 2px 8px; border-radius: 4px; font-size: 10px;
+  border: 1px solid;
+}
+.badge-type  { border-color: rgba(124,92,252,0.4); color: var(--accent); background: rgba(124,92,252,0.1); }
+.badge-score { border-color: rgba(92,240,252,0.4); color: var(--accent3); background: rgba(92,240,252,0.08); }
+.badge-price { border-color: rgba(74,222,128,0.4); color: var(--success); background: rgba(74,222,128,0.08); }
+.badge-cat   { border-color: rgba(252,92,125,0.3); color: var(--accent2); background: rgba(252,92,125,0.08); }
+
+.result-snippet {
+  font-size: 13px; color: var(--muted); line-height: 1.6;
+}
+.result-snippet mark {
+  background: rgba(124,92,252,0.25); color: var(--accent);
+  border-radius: 2px; padding: 0 2px;
+}
+.result-date { font-size: 11px; color: var(--muted); margin-top: 10px; }
+.result-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+.tag { font-size: 10px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 2px 6px; border-radius: 3px; }
+
+/* ── Suggestion box ─────────────────────────────────────── */
+.suggestion-box {
+  display: none; margin-bottom: 16px; padding: 14px 18px;
+  background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25);
+  border-radius: 10px; font-size: 13px; color: var(--warn);
+}
+.suggestion-box.show { display: block; }
+.suggestion-link { color: var(--accent); cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+.suggestion-link:hover { color: var(--accent2); }
+
+/* ── Pagination ─────────────────────────────────────────── */
+.pagination {
+  display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 24px;
+}
+.page-btn {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font-mono); font-size: 13px;
+  cursor: pointer; transition: all var(--transition);
+  display: flex; align-items: center; justify-content: center;
+}
+.page-btn:hover { border-color: var(--accent); color: var(--accent); }
+.page-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── Stats panel ─────────────────────────────────────────── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.stat-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px; text-align: center;
+}
+.stat-num { font-family: var(--font-head); font-size: 32px; font-weight: 800; color: var(--accent); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+.type-bars { display: flex; flex-direction: column; gap: 8px; }
+.type-row { display: flex; align-items: center; gap: 10px; }
+.type-name { width: 50px; font-size: 11px; color: var(--muted); text-align: right; }
+.type-bar-wrap { flex: 1; background: var(--surface); border-radius: 4px; height: 6px; overflow: hidden; }
+.type-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(to right, var(--accent), var(--accent3)); transition: width 0.6s ease; }
+.type-count { font-size: 11px; color: var(--muted); width: 30px; }
+
+.terms-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.term-chip {
+  padding: 4px 10px; border-radius: 100px;
+  background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.2);
+  font-size: 11px; color: var(--accent);
+  display: flex; align-items: center; gap: 4px;
+}
+.term-num { font-size: 10px; color: var(--muted); }
+
+/* ── Tabs ────────────────────────────────────────────────── */
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+.tab {
+  padding: 8px 16px; border-radius: 8px;
+  background: transparent; border: 1px solid transparent;
+  color: var(--muted); font-family: var(--font-head); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all var(--transition);
+}
+.tab.active {
+  background: var(--card); border-color: var(--border); color: var(--text);
+}
+.tab:hover:not(.active) { color: var(--text); }
+
+.panel { display: none; }
+.panel.active { display: block; animation: fadeUp 0.25s ease both; }
+
+/* ── Loading spinner ─────────────────────────────────────── */
+.spinner {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2px solid var(--border); border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite; margin: 40px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Empty state ─────────────────────────────────────────── */
+.empty {
+  text-align: center; padding: 60px 20px; color: var(--muted);
+}
+.empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-text { font-size: 14px; }
+
+/* ── Animations ──────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.header     { animation-delay: 0ms; }
+.card:nth-child(1) { animation: fadeUp 0.5s 0.1s ease both; }
+.card:nth-child(2) { animation: fadeUp 0.5s 0.2s ease both; }
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media(max-width:600px) {
+  .format-grid { grid-template-columns: repeat(3,1fr); }
+  .stats-grid { grid-template-columns: 1fr; }
+  .filters { flex-direction: column; }
+  .filter-date { flex-wrap: wrap; }
+}
+</style>
+</head>
+
+<body>
+<div class="blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<div class="shell">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-mark"><div class="logo-dot"></div> NEXSEARCH <div class="logo-dot"></div></div>
+    <h1>Mini Search Engine</h1>
+    <p class="tagline">Boolean · Phrase · Fuzzy · Wildcard · Highlights · Suggestions</p>
+  </div>
+
+  <!-- Status -->
+  <div class="status-bar" id="statusBar">
+    <div class="pill"><div class="pill-dot yellow" id="esDot"></div><span id="esStatus">Checking Elasticsearch...</span></div>
+    <div class="pill"><div class="pill-dot yellow" id="apiDot"></div><span id="apiStatus">Checking API...</span></div>
+    <div class="pill" id="docCountPill" style="display:none">
+      <div class="pill-dot green"></div><span id="docCount">0 docs indexed</span>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('search')">🔍 Search</button>
+    <button class="tab" onclick="switchTab('index')">⚡ Index Builder</button>
+    <button class="tab" onclick="switchTab('stats')">📊 Stats</button>
+  </div>
+
+  <!-- ── SEARCH PANEL ─── -->
+  <div id="panel-search" class="panel active">
+
+    <div class="card">
+      <div class="card-title">Search Query</div>
+
+      <div class="search-wrapper">
+        <input id="searchInput" class="search-input"
+          placeholder='Try: iphone AND apple, "noise canceling", phone NOT iphone, lap*, smart~'
+          onkeydown="if(event.key==='Enter')doSearch(1)" />
+        <button class="search-btn" onclick="doSearch(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Operator chips -->
+      <div class="op-chips">
+        <span class="chip" onclick="insertOp('AND')"><code>AND</code> both</span>
+        <span class="chip" onclick="insertOp('OR')"><code>OR</code> either</span>
+        <span class="chip" onclick="insertOp('NOT')"><code>NOT</code> exclude</span>
+        <span class="chip" onclick="insertPhrase()"><code>" "</code> phrase</span>
+        <span class="chip" onclick="insertOp('~')"><code>~</code> fuzzy</span>
+        <span class="chip" onclick="insertOp('*')"><code>*</code> wildcard</span>
+        <span class="chip" onclick="insertExample('iphone AND apple')">iphone AND apple</span>
+        <span class="chip" onclick="insertExample('phone NOT samsung')">phone NOT samsung</span>
+        <span class="chip" onclick="insertExample('lap*')">lap*</span>
+        <span class="chip" onclick="insertExample('headphon~')">fuzzy: headphon~</span>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters">
+        <select class="filter-select" id="filterType">
+          <option value="">All file types</option>
+          <option value="csv">CSV</option>
+          <option value="txt">TXT</option>
+          <option value="json">JSON</option>
+          <option value="pdf">PDF</option>
+          <option value="xlsx">XLSX</option>
+        </select>
+        <div class="filter-date">
+          <span>Modified:</span>
+          <input type="date" id="dateFrom" placeholder="From" />
+          <span>→</span>
+          <input type="date" id="dateTo" placeholder="To" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Results area -->
+    <div id="resultsArea"></div>
+  </div>
+
+  <!-- ── INDEX BUILDER PANEL ─── -->
+  <div id="panel-index" class="panel">
+    <div class="card">
+      <div class="card-title">File Formats to Index</div>
+      <div class="format-grid" id="formatGrid">
+        <button class="fmt-btn active" data-ext="csv" onclick="toggleFmt(this)">
+          <span class="fmt-icon">📊</span>CSV
+        </button>
+        <button class="fmt-btn active" data-ext="txt" onclick="toggleFmt(this)">
+          <span class="fmt-icon">📄</span>TXT
+        </button>
+        <button class="fmt-btn active" data-ext="json" onclick="toggleFmt(this)">
+          <span class="fmt-icon">🗂️</span>JSON
+        </button>
+        <button class="fmt-btn" data-ext="pdf" onclick="toggleFmt(this)">
+          <span class="fmt-icon">📕</span>PDF
+        </button>
+        <button class="fmt-btn" data-ext="xlsx" onclick="toggleFmt(this)">
+          <span class="fmt-icon">📗</span>XLSX
+        </button>
+      </div>
+
+      <div class="folder-row">
+        <input id="folderPath" class="input-field" placeholder="Dataset folder path (e.g. ./datasets)" value="./datasets" />
+        <button class="btn btn-primary" onclick="buildIndex()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+          Build Index
+        </button>
+      </div>
+
+      <div id="buildResult" class="build-result"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Document Schema</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        <p><strong style="color:var(--text)">CSV:</strong> Each row becomes a separate document. Columns <code>name/title</code> → filename, <code>description/content</code> → searchable content, <code>price</code>, <code>category</code> are indexed as dedicated fields.</p>
+        <br/>
+        <p><strong style="color:var(--text)">JSON:</strong> Each array object → separate document. Fields <code>title</code>, <code>content</code>, <code>tags</code> are mapped. All string values are searchable.</p>
+        <br/>
+        <p><strong style="color:var(--text)">TXT/PDF/XLSX:</strong> Full file → single document. Text extracted and indexed as content field.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STATS PANEL ─── -->
+  <div id="panel-stats" class="panel">
+    <div id="statsArea">
+      <div class="empty"><div class="empty-icon">📊</div><div class="empty-text">Click "Load Stats" to see index analytics</div></div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-primary" onclick="loadStats()">Load Stats</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<script>
+const API = 'http://127.0.0.1:8000';
+let currentPage = 1;
+let currentQuery = '';
+let totalPages = 1;
+
+// ── Health check ──────────────────────────────────────────
+async function checkHealth() {
+  try {
+    const r = await fetch(API + '/health', { signal: AbortSignal.timeout(3000) });
+    const d = await r.json();
+    document.getElementById('apiDot').className = 'pill-dot green';
+    document.getElementById('apiStatus').textContent = 'API online';
+    if (d.elasticsearch === 'ok') {
+      document.getElementById('esDot').className = 'pill-dot green';
+      document.getElementById('esStatus').textContent = 'Elasticsearch online';
+    } else {
+      document.getElementById('esDot').className = 'pill-dot red';
+      document.getElementById('esStatus').textContent = 'Elasticsearch offline';
+    }
+    loadDocCount();
+  } catch {
+    document.getElementById('apiDot').className = 'pill-dot red';
+    document.getElementById('apiStatus').textContent = 'API offline — run: uvicorn main:app --reload';
+    document.getElementById('esDot').className = 'pill-dot red';
+    document.getElementById('esStatus').textContent = 'Cannot connect';
+  }
+}
+
+async function loadDocCount() {
+  try {
+    const r = await fetch(API + '/stats');
+    const d = await r.json();
+    if (d.total_documents !== undefined) {
+      document.getElementById('docCount').textContent = d.total_documents + ' docs indexed';
+      document.getElementById('docCountPill').style.display = '';
+    }
+  } catch {}
+}
+
+// ── Tab switching ─────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['search','index','stats'][i] === name));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  if (name === 'stats') loadStats();
+}
+
+// ── Operator helpers ──────────────────────────────────────
+function insertOp(op) {
+  const el = document.getElementById('searchInput');
+  const v = el.value;
+  el.value = v ? v.trimEnd() + ' ' + op + ' ' : '';
+  el.focus();
+}
+function insertPhrase() {
+  const el = document.getElementById('searchInput');
+  el.value = el.value ? el.value.trimEnd() + ' ""' : '""';
+  el.setSelectionRange(el.value.length - 1, el.value.length - 1);
+  el.focus();
+}
+function insertExample(ex) {
+  document.getElementById('searchInput').value = ex;
+  doSearch(1);
+}
+
+// ── Format toggles ────────────────────────────────────────
+function toggleFmt(btn) {
+  btn.classList.toggle('active');
+}
+function getFormats() {
+  return [...document.querySelectorAll('.fmt-btn.active')].map(b => b.dataset.ext).join(',');
+}
+
+// ── Build index ───────────────────────────────────────────
+async function buildIndex() {
+  const folder = document.getElementById('folderPath').value || './datasets';
+  const fmts = getFormats();
+  if (!fmts) { alert('Select at least one file format!'); return; }
+
+  const el = document.getElementById('buildResult');
+  el.className = 'build-result show';
+  el.textContent = '⏳ Building index...';
+
+  try {
+    const r = await fetch(`${API}/index?folder=${encodeURIComponent(folder)}&formats=${encodeURIComponent(fmts)}`, { method: 'POST' });
+    const d = await r.json();
+    if (d.success) {
+      const byType = Object.entries(d.by_type).map(([k,v]) => `${k}: ${v}`).join(', ');
+      el.className = 'build-result show';
+      el.textContent = `✅ Indexed ${d.indexed} documents (${byType || 'none'})`;
+      loadDocCount();
+    } else {
+      el.className = 'build-result error show';
+      el.textContent = '❌ ' + (d.error || 'Unknown error');
+    }
+  } catch (e) {
+    el.className = 'build-result error show';
+    el.textContent = '❌ Could not reach API. Is the server running?';
+  }
+}
+
+// ── Search ────────────────────────────────────────────────
+async function doSearch(page) {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+
+  currentQuery = q;
+  currentPage = page;
+
+  const fileType = document.getElementById('filterType').value;
+  const dateFrom = document.getElementById('dateFrom').value;
+  const dateTo   = document.getElementById('dateTo').value;
+
+  let url = `${API}/search?q=${encodeURIComponent(q)}&page=${page}&size=5`;
+  if (fileType) url += `&file_type=${fileType}`;
+  if (dateFrom) url += `&date_from=${dateFrom}`;
+  if (dateTo)   url += `&date_to=${dateTo}`;
+
+  document.getElementById('resultsArea').innerHTML = '<div class="spinner"></div>';
+
+  try {
+    const r = await fetch(url);
+    const d = await r.json();
+    renderResults(d);
+    totalPages = d.total_pages || 1;
+  } catch (e) {
+    document.getElementById('resultsArea').innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">⚠️</div>
+        <div class="empty-text">Could not reach API.<br>Make sure the backend is running: <code>uvicorn main:app --reload</code></div>
+      </div>`;
+  }
+}
+
+function renderResults(data) {
+  let html = '';
+
+  // Suggestion
+  if (data.suggestion) {
+    html += `<div class="suggestion-box show">
+      🤔 Did you mean: <span class="suggestion-link" onclick="insertExample('${data.suggestion}')">${data.suggestion}</span>?
+    </div>`;
+  }
+
+  if (!data.results || data.results.length === 0) {
+    html += `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No results found for "<strong>${escHtml(currentQuery)}</strong>"</div></div>`;
+    document.getElementById('resultsArea').innerHTML = html;
+    return;
+  }
+
+  // Header
+  html += `<div class="results-header">
+    <div class="results-count">Found <strong>${data.total}</strong> result(s) for "<strong>${escHtml(currentQuery)}</strong>"</div>
+    <div>Page ${data.page} of ${data.total_pages}</div>
+  </div>`;
+
+  // Cards
+  data.results.forEach((r, i) => {
+    const snippet = r.snippet || r.content || '';
+    const date = r.mod_date ? new Date(r.mod_date).toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'}) : '';
+    const tags = (r.tags || []).slice(0, 5).map(t => `<span class="tag">${escHtml(t)}</span>`).join('');
+
+    html += `<div class="result-card" style="animation-delay:${i*50}ms">
+      <div class="result-top">
+        <div class="result-title">${escHtml(r.filename || 'Document')}</div>
+        <div class="result-meta">
+          ${r.file_type ? `<span class="badge badge-type">${r.file_type.toUpperCase()}</span>` : ''}
+          ${r.score ? `<span class="badge badge-score">⚡ ${r.score}</span>` : ''}
+          ${r.price ? `<span class="badge badge-price">💰 $${r.price}</span>` : ''}
+          ${r.category ? `<span class="badge badge-cat">${r.category}</span>` : ''}
+        </div>
+      </div>
+      <div class="result-snippet">${snippet}</div>
+      ${tags ? `<div class="result-tags">${tags}</div>` : ''}
+      ${date ? `<div class="result-date">📅 ${date}</div>` : ''}
+    </div>`;
+  });
+
+  // Pagination
+  if (data.total_pages > 1) {
+    html += '<div class="pagination">';
+    html += `<button class="page-btn" onclick="doSearch(${data.page-1})" ${data.page<=1?'disabled':''}>‹</button>`;
+    const start = Math.max(1, data.page - 2);
+    const end = Math.min(data.total_pages, data.page + 2);
+    for (let p = start; p <= end; p++) {
+      html += `<button class="page-btn ${p===data.page?'active':''}" onclick="doSearch(${p})">${p}</button>`;
+    }
+    html += `<button class="page-btn" onclick="doSearch(${data.page+1})" ${data.page>=data.total_pages?'disabled':''}>›</button>`;
+    html += '</div>';
+  }
+
+  document.getElementById('resultsArea').innerHTML = html;
+}
+
+// ── Stats ─────────────────────────────────────────────────
+async function loadStats() {
+  document.getElementById('statsArea').innerHTML = '<div class="spinner"></div>';
+  try {
+    const r = await fetch(API + '/stats');
+    const d = await r.json();
+    renderStats(d);
+  } catch {
+    document.getElementById('statsArea').innerHTML = `<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-text">Could not load stats. Is the API running?</div></div>`;
+  }
+}
+
+function renderStats(d) {
+  const total = d.total_documents || 0;
+  const byType = d.by_type || {};
+  const byCat  = d.by_category || {};
+  const terms  = d.top_terms || [];
+
+  const maxType = Math.max(...Object.values(byType), 1);
+  const maxCat  = Math.max(...Object.values(byCat), 1);
+
+  const typeBars = Object.entries(byType).map(([k,v]) =>
+    `<div class="type-row">
+      <div class="type-name">${k}</div>
+      <div class="type-bar-wrap"><div class="type-bar-fill" style="width:${(v/maxType*100).toFixed(1)}%"></div></div>
+      <div class="type-count">${v}</div>
+    </div>`).join('');
+
+  const catBars = Object.entries(byCat).slice(0,8).map(([k,v]) =>
+    `<div class="type-row">
+      <div class="type-name">${k}</div>
+      <div class="type-bar-wrap"><div class="type-bar-fill" style="width:${(v/maxCat*100).toFixed(1)}%;background:linear-gradient(to right,var(--accent2),var(--warn))"></div></div>
+      <div class="type-count">${v}</div>
+    </div>`).join('');
+
+  const termChips = terms.map(t =>
+    `<div class="term-chip">${t.term}<span class="term-num">${t.count}</span></div>`
+  ).join('');
+
+  document.getElementById('statsArea').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-num">${total}</div>
+        <div class="stat-label">Total Documents</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">${Object.keys(byType).length}</div>
+        <div class="stat-label">File Types</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Documents by File Type</div>
+      <div class="type-bars">${typeBars || '<div style="color:var(--muted);font-size:13px">No data</div>'}</div>
+    </div>
+
+    ${catBars ? `<div class="card">
+      <div class="card-title">Documents by Category</div>
+      <div class="type-bars">${catBars}</div>
+    </div>` : ''}
+
+    <div class="card">
+      <div class="card-title">Top 10 Most Frequent Terms</div>
+      <div class="terms-list">${termChips || '<div style="color:var(--muted);font-size:13px">No data</div>'}</div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn btn-secondary" onclick="loadStats()">↻ Refresh</button>
+    </div>
+  `;
+}
+
+// ── Utility ───────────────────────────────────────────────
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Init ──────────────────────────────────────────────────
+checkHealth();
+setInterval(checkHealth, 30000);
+</script>
+</body>
+</html>

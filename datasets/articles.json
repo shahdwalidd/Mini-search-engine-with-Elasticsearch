@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "Best Smartphones 2024",
+    "content": "The smartphone market in 2024 features incredible competition. iPhone 15 Pro leads with titanium build and A17 Pro chip. Samsung Galaxy S24 Ultra impresses with S Pen and 200MP camera. Google Pixel 8 Pro offers the best AI photography experience.",
+    "tags": ["smartphones", "apple", "samsung", "google", "android", "ios"],
+    "published": "2024-01-15"
+  },
+  {
+    "id": 2,
+    "title": "Laptop Buying Guide",
+    "content": "Choosing the right laptop depends on your needs. MacBook Pro with M3 Max chip offers unmatched performance for creative professionals. Dell XPS 15 is perfect for Windows users wanting premium build quality. ASUS ROG Zephyrus is ideal for gaming enthusiasts.",
+    "tags": ["laptops", "macbook", "dell", "asus", "gaming", "business"],
+    "published": "2024-02-20"
+  },
+  {
+    "id": 3,
+    "title": "Wireless Audio Revolution",
+    "content": "Noise canceling technology has transformed how we listen to music. Sony WH-1000XM5 and Bose QC45 lead the over-ear category. Apple AirPods Pro 2 dominates true wireless earbuds with adaptive transparency and spatial audio support.",
+    "tags": ["audio", "headphones", "earbuds", "sony", "bose", "apple"],
+    "published": "2024-03-10"
+  },
+  {
+    "id": 4,
+    "title": "Gaming Console Wars",
+    "content": "PlayStation 5 and Xbox Series X battle for gaming supremacy. PS5 exclusive games like Spider-Man and God of War showcase stunning graphics. Xbox Game Pass offers incredible value with hundreds of games. Nintendo Switch OLED continues to charm with portable gaming.",
+    "tags": ["gaming", "playstation", "xbox", "nintendo", "console"],
+    "published": "2024-04-05"
+  }
+]

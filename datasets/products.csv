@@ -1,0 +1,31 @@
+id,name,description,price,category
+1,iPhone 15 Pro,Apple flagship smartphone with titanium design A17 Pro chip and 48MP camera system,1199,phones
+2,Samsung Galaxy S24 Ultra,Android powerhouse with built-in S Pen 200MP camera and Snapdragon 8 Gen 3,1299,phones
+3,Google Pixel 8 Pro,Google AI-first phone with best-in-class computational photography and 7 years updates,999,phones
+4,OnePlus 12,Flagship killer with Snapdragon 8 Gen 3 Hasselblad tuned cameras and 100W charging,799,phones
+5,MacBook Pro 16,Apple Silicon M3 Max laptop with 22h battery life stunning Liquid Retina XDR display,3499,laptops
+6,Dell XPS 15,Premium Windows laptop with Intel Core i9 OLED display and NVIDIA RTX 4060,2199,laptops
+7,HP Spectre x360,Convertible laptop with touchscreen Intel Evo platform and gorgeous gem-cut design,1699,laptops
+8,Lenovo ThinkPad X1 Carbon,Ultra-light business laptop with military-grade durability and legendary keyboard,1899,laptops
+9,ASUS ROG Zephyrus G14,Gaming laptop with AMD Ryzen 9 RX 7900S and anime matrix LED lid display,1999,laptops
+10,iPad Pro 13,Apple tablet with M4 chip Ultra Retina XDR OLED display and Apple Pencil Pro support,1299,tablets
+11,Samsung Galaxy Tab S9 Ultra,Android tablet with 14.6 inch AMOLED display S Pen included and DeX mode,1199,tablets
+12,Microsoft Surface Pro 9,Windows tablet laptop hybrid with Intel Core i7 and detachable keyboard,1599,tablets
+13,Sony WH-1000XM5,Industry-leading noise canceling headphones with 30h battery and multipoint connection,349,audio
+14,Apple AirPods Pro 2,Premium earbuds with adaptive transparency H2 chip and USB-C charging,249,audio
+15,Bose QuietComfort 45,Legendary comfort noise canceling headphones with balanced sound,329,audio
+16,Samsung Galaxy Buds 3 Pro,Wireless earbuds with intelligent active noise cancellation and 360 audio,229,audio
+17,Apple Watch Series 9,Smartwatch with S9 chip double tap gesture health monitoring and carbon neutral option,399,wearables
+18,Samsung Galaxy Watch 6,Wear OS smartwatch with advanced health tracking sapphire glass and sleep coaching,299,wearables
+19,Garmin Fenix 7 Pro,Premium multisport GPS watch with solar charging topographic maps and 37 day battery,799,wearables
+20,Fitbit Charge 6,Fitness tracker with built-in GPS heart rate monitoring and Google integration,159,wearables
+21,LG C3 OLED 65,65 inch OLED TV with perfect blacks Dolby Vision IQ and NVIDIA G-Sync,1799,tvs
+22,Sony Bravia XR A95L,QD-OLED TV with cognitive processor XR perfect color and PS5 features,2999,tvs
+23,Samsung Neo QLED 8K,8K mini-LED TV with Neural Quantum Processor and Dolby Atmos sound,3999,tvs
+24,Canon EOS R5,Full-frame mirrorless camera with 45MP sensor 8K video and IBIS,3899,cameras
+25,Sony Alpha A7 IV,Versatile mirrorless camera with 33MP full-frame sensor real-time tracking,2499,cameras
+26,Nikon Z8,Professional mirrorless with 45.7MP stacked sensor 8K video and dual card slots,3999,cameras
+27,DJI Mavic 3 Pro,Drone with triple camera Hasselblad imaging 43 min flight time and omnidirectional sensing,2199,drones
+28,PlayStation 5,Sony gaming console with ultra-high speed SSD ray tracing and DualSense haptic controller,499,gaming
+29,Xbox Series X,Microsoft gaming console with 12 teraflops GPU Quick Resume and Game Pass Ultimate,499,gaming
+30,Nintendo Switch OLED,Hybrid gaming console with 7 inch OLED screen wide adjustable stand and enhanced audio,349,gaming
